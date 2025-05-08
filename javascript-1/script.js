@@ -14,6 +14,24 @@ const album = {
   ],
 };
 
+const album2 = {
+  artist: "Fiona Apple",
+  songs: [
+    { name: "Fast As You Can", duration: 240 },
+    { name: "The First Taste", duration: 300 },
+    { name: "Love Ridden", duration: 240 },
+  ],
+};
+
+album3 = {
+  artist: "elliot smith",
+  songs: [
+    { name: "Angeles", duration: 200 },
+    { name: "Between the Bars", duration: 180 },
+    { name: "Bled White", duration: 240 },
+  ],
+};
+
 function printSortedSongs(album) {
   const sortedSongs = album.songs.sort((a, b) => a.duration - b.duration);
 
@@ -22,6 +40,9 @@ function printSortedSongs(album) {
     const seconds = song.duration % 60;
     console.log(`${song.name}: ${minutes}m ${seconds}s`);
   });
+  console.log("/////////////////////////////////////////////////");
 }
 
 printSortedSongs(album);
+printSortedSongs(album2);
+printSortedSongs(album3);
