@@ -32,6 +32,19 @@ album3 = {
   ],
 };
 
+//validacion de si el objeto contiene informacion
+const isAlbumEmpty = (album) => {
+  if (album.hasOwnProperty("songs") && album.songs.length > 0) {
+    return false; // el álbum no está vacío
+  }
+  return true;
+};
+
+console.log(isAlbumEmpty(album));
+console.log(isAlbumEmpty(album2));
+console.log(isAlbumEmpty(album3));
+
+//imprime canciones ordenadas por duracion
 function printSortedSongs(album) {
   const sortedSongs = album.songs.sort((a, b) => a.duration - b.duration);
 
