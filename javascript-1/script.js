@@ -1,3 +1,4 @@
+//Albums
 const album = {
   artist: "Adrianne Lenker",
   songs: [
@@ -53,6 +54,8 @@ const validateAlbum = (album) => {
   return true;
 };
 
+//VALIDACIONES
+
 //validacion si la estructura del objeto es correcta
 function validateStructure(album) {
   if (typeof album !== "object") {
@@ -80,10 +83,6 @@ function validateStructure(album) {
   }
   return true;
 }
-
-console.log(isAlbumEmpty(album));
-console.log(isAlbumEmpty(album2));
-console.log(isAlbumEmpty(album3));
 
 //validacion de si informacion de duracion es correcta
 function validateSeconds(input) {
@@ -115,6 +114,12 @@ function printSortedSongs(album) {
 function albumDuration(album) {
   return album.songs.reduce((total, song) => total + song.duration, 0);
 }
+
+//EJECUCIONES
+
+console.log(isAlbumEmpty(album));
+console.log(isAlbumEmpty(album2));
+console.log(isAlbumEmpty(album3));
 
 printSortedSongs(album);
 printSortedSongs(album2);
