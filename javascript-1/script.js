@@ -12,6 +12,9 @@ const album = {
     { name: "dragon eyes", duration: 195 },
     { name: "my angel", duration: 302 },
     { name: "two reverse", duration: 199 },
+    { name: "cradle", duration: 180 },
+    { name: "blue", duration: 240 },
+    { name: "sick of spiraling", duration: 300 },
   ],
 };
 
@@ -21,6 +24,15 @@ const album2 = {
     { name: "Fast As You Can", duration: 240 },
     { name: "The First Taste", duration: 300 },
     { name: "Love Ridden", duration: 240 },
+    { name: "Shadowboxer", duration: 180 },
+    { name: "Sleep to Dream", duration: 240 },
+    { name: "Criminal", duration: 300 },
+    { name: "The First Taste", duration: 240 },
+    { name: "The Way Things Are", duration: 180 },
+    { name: "Paper Bag", duration: 240 },
+    { name: "I Know", duration: 300 },
+    { name: "A Mistake", duration: 240 },
+    { name: "The First Taste", duration: 180 },
   ],
 };
 
@@ -30,18 +42,63 @@ album3 = {
     { name: "Angeles", duration: 200 },
     { name: "Between the Bars", duration: 180 },
     { name: "Bled White", duration: 240 },
+    { name: "Clementine", duration: 300 },
+    { name: "Last Call", duration: 240 },
+    { name: "Needle in the Hay", duration: 180 },
+    { name: "Say Yes", duration: 240 },
+    { name: "Somebody That I Used to Know", duration: 300 },
+    { name: "Waltz #2 (XO)", duration: 240 },
+    { name: "Between the Bars", duration: 180 },
+    { name: "Bled White", duration: 240 },
+    { name: "Clementine", duration: 300 },
   ],
 };
 
-//validacion de si el objeto contiene informacion
+//VALIDACIONES
+
 const isAlbumEmpty = (album) => {
-  if (album.hasOwnProperty("songs") && album.songs.length > 0) {
-    return false; // el álbum no está vacío
-  }
-  return true;
+  return !(album.hasOwnProperty("songs") && album.songs.length > 0);
 };
 
-// funcion que no permita que las siguientes funcones se ejecuten si el objeto esta vacio
+// Verifica si la estructura del álbum es válida
+function validateStructure(album) {
+  if (typeof album !== "object") {
+    console.error("Album is not an object");
+    return false;
+  }
+
+  if (!album.hasOwnProperty("artist") || typeof album.artist !== "string") {
+    console.warn("Album artist is missing or not a string");
+    return false;
+  }
+
+  if (!album.hasOwnProperty("songs") || !Array.isArray(album.songs)) {
+    console.warn("Album songs is missing or not an array");
+    return false;
+  }
+
+  if (album.songs.length === 0) {
+    console.warn("Album has no songs");
+    return false;
+  }
+
+  return true;
+}
+
+function topTenSongs(album) {
+  const songs = album.songs.slice();
+  const sortedSongs = songs.sort((a, b) => a.duration - b.duration);
+  const topTen = sortedSongs.slice(0, 10);
+  return topTen;
+}
+
+// Verifica si el tiempo es válido
+const validateSeconds = (input) => {
+  const seconds = Number(input);
+  return Number.isInteger(seconds) && seconds >= 0;
+};
+
+// Validación general para evitar ejecutar funciones si el álbum está mal formado
 const validateAlbum = (album) => {
   if (isAlbumEmpty(album)) {
     console.error("Album is empty");
@@ -54,102 +111,32 @@ const validateAlbum = (album) => {
   return true;
 };
 
-//VALIDACIONES
+console.log("/////////////////////////////////////////////////");
 
-//validacion si la estructura del objeto es correcta
-function validateStructure(album) {
-  if (typeof album !== "object") {
-    console.error("Album is not and object");
-    return false;
-  }
+//FUNCIONES DE OPERACIONES
 
-  if (!album.hasOwnProperty("artist")) {
-    console.warn("Album does not have an artist");
-    return false;
-  }
-
-  if (typeof album.artist !== "string") {
-    console.warn("Album is not a string");
-    return false;
-  }
-  if (!album.hasOwnProperty("songs")) {
-    console.warn("Album is missing songs");
-    return false;
-  }
-
-  if (!Array.isArray(album.songs)) {
-    console.error("Album songs is not an array");
-    return false;
-  }
-  return true;
-}
-
-//validacion de si informacion de duracion es correcta
-function validateSeconds(input) {
-  const seconds = Number(input);
-  return Number.isInteger(seconds) && seconds >= 0;
-}
-
-//imprime canciones ordenadas por duracion y valida si la duracion es correcta
-function printSortedSongs(album) {
-  const validSongs = album.songs.filter((song) => {
-    const isValid = validateSeconds(song.duration);
-    if (!isValid) {
-      console.warn(`Song duration is invalid "${song.name}": ${song.duration}`);
-    }
-    return isValid;
-  });
-
-  const sortedSongs = album.songs.sort((a, b) => a.duration - b.duration);
-
-  sortedSongs.forEach((song) => {
-    const minutes = Math.floor(song.duration / 60);
-    const seconds = song.duration % 60;
-    console.log(`${song.name}: ${minutes}m ${seconds}s`);
-  });
-  console.log("/////////////////////////////////////////////////");
-}
-
-//suma de duracion de canciones
 function albumDuration(album) {
-  return album.songs.reduce((total, song) => total + song.duration, 0);
+  if (!validateAlbum(album)) return 0;
+
+  return album.songs.reduce((total, song) => {
+    return validateSeconds(song.duration) ? total + song.duration : total;
+  }, 0);
 }
 
-//EJECUCIONES
-
-console.log(isAlbumEmpty(album));
-console.log(isAlbumEmpty(album2));
-console.log(isAlbumEmpty(album3));
-
-printSortedSongs(album);
-printSortedSongs(album2);
-printSortedSongs(album3);
-
-//imprime duracion total de album por artista
-const total = albumDuration(album);
-{
+function printAlbumDuration(album) {
   const total = albumDuration(album);
-  console.log(
-    ` ${album.artist} Total Duration: ${Math.floor(total / 60)}m ${total % 60}s`
-  );
+  const minutes = Math.floor(total / 60);
+  const seconds = total % 60;
+  console.log(`${album.artist} Total Duration: ${minutes}m ${seconds}s`);
 }
 
-const total2 = albumDuration(album2);
-{
-  const total2 = albumDuration(album2);
-  console.log(
-    ` ${album2.artist} Total Duration: ${Math.floor(total2 / 60)}m ${
-      total2 % 60
-    }s`
-  );
-}
+// EJECUCIÓNES
 
-const total3 = albumDuration(album3);
-{
-  const total3 = albumDuration(album3);
-  console.log(
-    ` ${album3.artist} Total Duration: ${Math.floor(total3 / 60)}m ${
-      total3 % 60
-    }s`
-  );
-}
+console.log("Top 10 canciones de Adrianne Lenker:");
+console.log(topTenSongs(album));
+
+console.log("Top 10 canciones de Fiona Apple:");
+console.log(topTenSongs(album2));
+
+console.log("Top 10 canciones Elliot Smith:");
+console.log(topTenSongs(album3));
