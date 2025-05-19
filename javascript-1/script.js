@@ -98,6 +98,35 @@ const validateSeconds = (input) => {
   return Number.isInteger(seconds) && seconds >= 0;
 };
 
+function secondsToTime(songs) {
+  return songs.map((song) => {
+    const minutes = Math.floor(song.duration / 60);
+    const seconds = song.duration % 60;
+    const duration = Number(song.duration);
+
+    if (isNaN(duration)) {
+      return {
+        name: song.name,
+        duration: "Invalid duration",
+      };
+    }
+
+    if (minutes < 60) {
+      return {
+        name: song.name,
+        duration: `${minutes}m ${seconds}s`,
+      };
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const minutesRemaining = minutes - hours * 60;
+      return {
+        name: song.name,
+        duration: `${hours}h ${minutesRemaining}m ${seconds}s`,
+      };
+    }
+  });
+}
+
 // Validación general para evitar ejecutar funciones si el álbum está mal formado
 const validateAlbum = (album) => {
   if (isAlbumEmpty(album)) {
@@ -111,17 +140,34 @@ const validateAlbum = (album) => {
   return true;
 };
 
-console.log("/////////////////////////////////////////////////");
+console.log(
+  "	\x1b[32m/////////////////////////////////////////////////	\x1b[32m"
+);
 
-//FUNCIONES DE OPERACIONES
+function formatDuration(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+}
 
-// EJECUCIÓNES
+function printTopTen(album) {
+  if (!validateAlbum(album)) return;
 
-console.log("Top 10 songs Adrianne Lenker:");
-console.log(topTenSongs(album));
+  const songs = topTenSongs(album);
+  console.log(`\x1b[36mTop 10 songs from ${album.artist}:\x1b[0m`);
 
-console.log("Top 10 songs Apple:");
-console.log(topTenSongs(album2));
+  songs.forEach((song, index) => {
+    const formattedTime = formatDuration(song.duration);
+    console.log(`${index + 1}. ${song.name} (${formattedTime})`);
+  });
+}
 
-console.log("Top 10 songs Smith:");
-console.log(topTenSongs(album3));
+printTopTen(album);
+console.log(
+  "	\x1b[32m/////////////////////////////////////////////////	\x1b[32m"
+);
+printTopTen(album2);
+console.log(
+  "	\x1b[32m/////////////////////////////////////////////////	\x1b[32m"
+);
+printTopTen(album3);
