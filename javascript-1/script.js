@@ -36,7 +36,7 @@ const album2 = {
   ],
 };
 
-album3 = {
+const album3 = {
   artist: "elliot smith",
   songs: [
     { name: "Angeles", duration: 200 },
@@ -132,11 +132,11 @@ function printAlbumDuration(album) {
 
 // EJECUCIÓNES
 
-console.log("Top 10 canciones de Adrianne Lenker:");
+console.log("Top 10 songs Adrianne Lenker:");
 console.log(topTenSongs(album));
 
-console.log("Top 10 canciones de Fiona Apple:");
+console.log("Top 10 songs Apple:");
 console.log(topTenSongs(album2));
 
-console.log("Top 10 canciones Elliot Smith:");
+console.log("Top 10 songs Smith:");
 console.log(topTenSongs(album3));
