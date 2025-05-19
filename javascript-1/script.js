@@ -115,21 +115,6 @@ console.log("/////////////////////////////////////////////////");
 
 //FUNCIONES DE OPERACIONES
 
-function albumDuration(album) {
-  if (!validateAlbum(album)) return 0;
-
-  return album.songs.reduce((total, song) => {
-    return validateSeconds(song.duration) ? total + song.duration : total;
-  }, 0);
-}
-
-function printAlbumDuration(album) {
-  const total = albumDuration(album);
-  const minutes = Math.floor(total / 60);
-  const seconds = total % 60;
-  console.log(`${album.artist} Total Duration: ${minutes}m ${seconds}s`);
-}
-
 // EJECUCIÓNES
 
 console.log("Top 10 songs Adrianne Lenker:");
