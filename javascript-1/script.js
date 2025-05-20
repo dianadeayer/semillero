@@ -60,6 +60,8 @@ const isAlbumEmpty = (album) => {
   return !(album.hasOwnProperty("songs") && album.songs.length > 0);
 };
 
+
+// Verifica si la estructura del álbum es válida
 function validateStructure(album) {
   if (typeof album !== "object") {
     console.error("Album is not an object");
@@ -89,6 +91,7 @@ const validateSeconds = (input) => {
   return Number.isInteger(seconds) && seconds >= 0;
 };
 
+// Validación general para evitar ejecutar funciones si el álbum está mal formado
 const validateAlbum = (album) => {
   if (isAlbumEmpty(album)) {
     console.error("Album is empty");
