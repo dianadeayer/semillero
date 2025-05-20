@@ -1,2 +1,0 @@
-# semillero
-proyectos de capacitación
