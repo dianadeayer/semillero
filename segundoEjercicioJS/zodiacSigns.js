@@ -1,4 +1,4 @@
-//objeto
+//Objeto
 const people = [
   { name: "Karina", birthday: "1995-05-12" },
   { name: "Melissa", birthday: "1990-10-14" },
