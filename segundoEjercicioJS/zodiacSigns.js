@@ -46,7 +46,15 @@ const isValidDate = (dateStr) => {
   if (typeof dateStr !== "string") return false;
   const regex = /^\d{4}-\d{2}-\d{2}$/;
   if (!regex.test(dateStr)) return false;
-  return true;
+  const date = new Date(dateStr);
+  const [year, month, day] = dateStr.split("-").map(Number);
+
+  // verifica ue la fecha sea válida
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day
+  );
 };
 
 // lista de fechas validas
