@@ -1,4 +1,4 @@
-//objeto
+//Objeto
 const people = [
   { name: "Karina", birthday: "1995-05-12" },
   { name: "Melissa", birthday: "1990-10-14" },
@@ -12,35 +12,64 @@ const getZodiacSign = (dateStr) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18))
-    return "Acuario";
-  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "Piscis";
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Aries";
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Tauro";
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 20))
-    return "Géminis";
-  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "Cáncer";
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "Leo";
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "Virgo";
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "Libra";
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21))
-    return "Escorpio";
-  if ((month === 11 && day >= 22) || (month === 12 && day <= 21))
-    return "Sagitario";
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19))
-    return "Capricornio";
+  switch (month) {
+    case 1:
+      return day <= 19 ? "Capricornio" : "Acuario";
+    case 2:
+      return day <= 18 ? "Acuario" : "Piscis";
+    case 3:
+      return day <= 20 ? "Piscis" : "Aries";
+    case 4:
+      return day <= 19 ? "Aries" : "Tauro";
+    case 5:
+      return day <= 20 ? "Tauro" : "Géminis";
+    case 6:
+      return day <= 20 ? "Géminis" : "Cáncer";
+    case 7:
+      return day <= 22 ? "Cáncer" : "Leo";
+    case 8:
+      return day <= 22 ? "Leo" : "Virgo";
+    case 9:
+      return day <= 22 ? "Virgo" : "Libra";
+    case 10:
+      return day <= 22 ? "Libra" : "Escorpio";
+    case 11:
+      return day <= 21 ? "Escorpio" : "Sagitario";
+    case 12:
+      return day <= 21 ? "Sagitario" : "Capricornio";
+    default:
+      return "Signo desconocido";
+  }
 };
 
-// obtener e imprimir cada signo
+const isValidDate = (dateStr) => {
+  if (typeof dateStr !== "string") return false;
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(dateStr)) return false;
+  return true;
+};
+
+// lista de fechas validas
+const printValidZodiac = (person, zodiacSign) => {
+  console.log(`${person.name} es ${zodiacSign}`);
+};
+
+// imprime mensaje si la fecha es invalida
+const printInvalidDateMessage = (person) => {
+  console.log(`❌ ${person.name} tiene una fecha inválida: ${person.birthday}`);
+};
+
+// Recorre la lista de personas
 const getZodiacSigns = (people) => {
-  return people.map((people) => {
-    const zodiacSign = getZodiacSign(people.birthday);
-    console.log(`${people.name} es ${zodiacSign}`);
-    return {
-      name: people.name,
-      zodiacSign: zodiacSign,
-    };
+  people.forEach((person) => {
+    if (!isValidDate(person.birthday)) {
+      printInvalidDateMessage(person);
+    } else {
+      const zodiacSign = getZodiacSign(person.birthday);
+      printValidZodiac(person, zodiacSign);
+    }
   });
 };
 
+// Ejecuta
 getZodiacSigns(people);
