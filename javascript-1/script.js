@@ -1,4 +1,4 @@
-//Albums
+// Albums
 const album = {
   artist: "Adrianne Lenker",
   songs: [
@@ -12,6 +12,9 @@ const album = {
     { name: "dragon eyes", duration: 195 },
     { name: "my angel", duration: 302 },
     { name: "two reverse", duration: 199 },
+    { name: "cradle", duration: 180 },
+    { name: "blue", duration: 240 },
+    { name: "sick of spiraling", duration: 300 },
     { name: "cradle", duration: 180 },
     { name: "blue", duration: 240 },
     { name: "sick of spiraling", duration: 300 },
@@ -36,7 +39,7 @@ const album2 = {
   ],
 };
 
-album3 = {
+const album3 = {
   artist: "elliot smith",
   songs: [
     { name: "Angeles", duration: 200 },
@@ -54,13 +57,12 @@ album3 = {
   ],
 };
 
-//VALIDACIONES
+// validaciones
 
 const isAlbumEmpty = (album) => {
   return !(album.hasOwnProperty("songs") && album.songs.length > 0);
 };
 
-// Verifica si la estructura del álbum es válida
 function validateStructure(album) {
   if (typeof album !== "object") {
     console.error("Album is not an object");
@@ -85,20 +87,7 @@ function validateStructure(album) {
   return true;
 }
 
-function topTenSongs(album) {
-  const songs = album.songs.slice();
-  const sortedSongs = songs.sort((a, b) => a.duration - b.duration);
-  const topTen = sortedSongs.slice(0, 10);
-  return topTen;
-}
-
-// Verifica si el tiempo es válido
-const validateSeconds = (input) => {
-  const seconds = Number(input);
-  return Number.isInteger(seconds) && seconds >= 0;
-};
-
-// Validación general para evitar ejecutar funciones si el álbum está mal formado
+// funcion que no permita que las siguientes funcones se ejecuten si el objeto esta vacio
 const validateAlbum = (album) => {
   if (isAlbumEmpty(album)) {
     console.error("Album is empty");
@@ -111,32 +100,34 @@ const validateAlbum = (album) => {
   return true;
 };
 
-console.log("/////////////////////////////////////////////////");
-
-//FUNCIONES DE OPERACIONES
-
-function albumDuration(album) {
-  if (!validateAlbum(album)) return 0;
-
-  return album.songs.reduce((total, song) => {
-    return validateSeconds(song.duration) ? total + song.duration : total;
-  }, 0);
+function formatDuration(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
-function printAlbumDuration(album) {
-  const total = albumDuration(album);
-  const minutes = Math.floor(total / 60);
-  const seconds = total % 60;
-  console.log(`${album.artist} Total Duration: ${minutes}m ${seconds}s`);
+function topTenSongs(album) {
+  const songs = album.songs.slice();
+  const sortedSongs = songs.sort((a, b) => a.duration - b.duration);
+  return sortedSongs.slice(0, 10);
 }
 
-// EJECUCIÓNES
+function printTopTen(album) {
+  if (!validateAlbum(album)) return;
 
-console.log("Top 10 canciones de Adrianne Lenker:");
-console.log(topTenSongs(album));
+  const songs = topTenSongs(album);
+  console.log(`\x1b[36mTop 10 songs from ${album.artist}:	\x1b[0m`);
 
-console.log("Top 10 canciones de Fiona Apple:");
-console.log(topTenSongs(album2));
+  songs.forEach((song, index) => {
+    const formattedTime = formatDuration(song.duration);
+    console.log(`${index + 1}. ${song.name} (${formattedTime})`);
+  });
+}
+// ejecuciones
 
-console.log("Top 10 canciones Elliot Smith:");
-console.log(topTenSongs(album3));
+console.log("\x1b[32m/////////////////////////////////////////////////\x1b[0m");
+printTopTen(album);
+console.log("\x1b[32m/////////////////////////////////////////////////\x1b[0m");
+printTopTen(album2);
+console.log("\x1b[32m/////////////////////////////////////////////////\x1b[0m");
+printTopTen(album3);
